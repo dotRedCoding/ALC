@@ -55,22 +55,35 @@ class ViewController: UIViewController {
         let viewsDictionary = ["label1": label1, "label2": label2, "label3": label3, "label4": label4, "label5": label5] // strings for the key to be used in the Visual Format
         
         // Constraints
-        for label in viewsDictionary.keys { // using a loop to cutdown on repeating the same line of code
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(label)]|", options: [], metrics: nil, views: viewsDictionary))
-            // visual format in stirng form describing how we want our labels to look+
-        }
+        //        for label in viewsDictionary.keys { // using a loop to cutdown on repeating the same line of code
+        //            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(label)]|", options: [], metrics: nil, views: viewsDictionary))
+        //            // visual format in stirng form describing how we want our labels to look+
+        //        }
+        //
+        //        let metrics = ["labelHeight": 88]
+        //
+        //        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label1(labelHeight@999)]-[label2(label1)]-[label3(label1)]-[label4(label1)]-[label5(label1)]-(>=10)-|", options: [], metrics: metrics, views: viewsDictionary)) // when specifying a space you need to add a dash on each side -(size)-
+        //
+        var previous: UILabel?
         
-        let metrics = ["labelHeight": 88]
-        
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label1(labelHeight@999)]-[label2(label1)]-[label3(label1)]-[label4(label1)]-[label5(label1)]-(>=10)-|", options: [], metrics: metrics, views: viewsDictionary)) // when specifying a space you need to add a dash on each side -(size)-
-
-        
+        for label in [label1, label2, label3, label4, label5] {
+            label.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 88).isActive = true
+            
+            if let previous = previous {
+                label.topAnchor.constraint(equalTo: previous.bottomAnchor, constant: 10).isActive = true
+            } else {
+                label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true // if starting at the first label (no previous) pin it at the top of the safe area
+            }
+            previous = label
     }
     
-    // MARK: - FUNCTIONS
-    
-    
-    // MARK: - BODY
+}
+
+// MARK: - FUNCTIONS
+
+
+// MARK: - BODY
 
 }
-    // MARK: - EXTENSIONS
+// MARK: - EXTENSIONS
